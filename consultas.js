@@ -24,11 +24,24 @@ const agregarPost = async (titulo, img, descripcion, likes) => {
 
 
 const obtenerPosts = async () => {
-    const { rows } = await pool.query("Select * FROM posts")
+    const { rows } = await pool.query("Select * FROM posts ORDER BY id ASC")
     console.log(rows);
     return rows;
 }
 
-obtenerPosts()
+/* obtenerPosts() */
 
-module.exports = {agregarPost, obtenerPosts}
+const modificarLikesPosts = async (likes,id) => {
+    const consulta = "UPDATE posts SET likes = $1 WHERE id = $2";
+    const values = [likes, id];
+    const result = await pool.query(consulta, values);
+  
+}
+
+const eliminarPost = async (id) => {
+    const consulta = "DELETE FROM posts WHERE id = $1";
+    const values = [id];
+    const result = await pool.query(consulta, values)
+}
+
+module.exports = {agregarPost, obtenerPosts, modificarLikesPosts, eliminarPost}

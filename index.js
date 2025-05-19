@@ -1,5 +1,5 @@
 const express = require("express");
-const { agregarPost, obtenerPosts } = require("./consultas");
+const { agregarPost, obtenerPosts, modificarLikesPosts, eliminarPost } = require("./consultas");
 const cors = require("cors")
 const app = express();
 
@@ -19,3 +19,16 @@ app.post("/posts", async (req, res) => {
     res.send("Elementos agregados con éxito!")
 })
 
+app.put("/posts/likes/:id", async (req, res) => {
+    const { id } = req.params;
+    const { likes } = req.body;
+   /*  console.log("Recibido", likes) */
+    await modificarLikesPosts(likes, id);
+    res.send("Likes modificado con éxito!")
+})
+
+app.delete("/posts/:id", async (req, res) => {
+    const { id } = req.params;
+    await eliminarPost(id);
+    res.send("Post eliminado")
+})

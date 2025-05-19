@@ -23,8 +23,9 @@ function App() {
   };
 
   // este método se utilizará en el siguiente desafío
-  const like = async (id) => {
-    await axios.put(urlBaseServer + `/posts/like/${id}`);
+  const like = async (id, currentLikes) => {
+    const newLikes = currentLikes + 1
+    await axios.put(urlBaseServer + `/posts/likes/${id}`, {likes: newLikes});
     getPosts();
   };
 

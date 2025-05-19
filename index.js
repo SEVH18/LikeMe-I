@@ -28,7 +28,12 @@ app.put("/posts/likes/:id", async (req, res) => {
 })
 
 app.delete("/posts/:id", async (req, res) => {
-    const { id } = req.params;
-    await eliminarPost(id);
-    res.send("Post eliminado")
+    try {
+        const { id } = req.params;
+        await eliminarPost(id);
+        res.send("Post eliminado")
+    }
+    catch ({ code, message }) {
+        res.status(code).send(message)
+    }
 })

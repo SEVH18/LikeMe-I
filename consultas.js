@@ -15,12 +15,6 @@ const agregarPost = async (titulo, img, descripcion, likes) => {
     console.log("Datos agregados exitosamente!")
 } 
 
-/* agregarPost(
-  "prueba",
-  "https://random.dog/b031bb2e-7dfa-4d76-83b7-369e2f4ff454.jpg",
-  "es una prueba",
-  1
-); */
 
 
 const obtenerPosts = async () => {
@@ -29,7 +23,7 @@ const obtenerPosts = async () => {
     return rows;
 }
 
-/* obtenerPosts() */
+
 
 const modificarLikesPosts = async (likes,id) => {
     const consulta = "UPDATE posts SET likes = $1 WHERE id = $2";
@@ -41,7 +35,11 @@ const modificarLikesPosts = async (likes,id) => {
 const eliminarPost = async (id) => {
     const consulta = "DELETE FROM posts WHERE id = $1";
     const values = [id];
-    const result = await pool.query(consulta, values)
+    const { rowCount } = await pool.query(consulta, values)
+    if (rowCount === 0) {
+        throw {code: 404, message: "No se consiguió ningún post con este id"}
+    }
+
 }
 
 module.exports = {agregarPost, obtenerPosts, modificarLikesPosts, eliminarPost}
